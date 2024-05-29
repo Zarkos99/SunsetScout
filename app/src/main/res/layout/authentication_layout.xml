@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/primary_background"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80sp"
+        android:text="@string/app_name"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_dark" />
+
+    <EditText
+        android:id="@+id/username_field"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
+        android:background="@drawable/input_field"
+        android:gravity="center"
+        android:textColorHint="@color/primary_background"
+        android:textSize="24sp"
+        android:hint="Username" />
+
+    <EditText
+        android:id="@+id/password_field"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginRight="40sp"
+        android:background="@drawable/input_field"
+        android:gravity="center"
+        android:textColorHint="@color/primary_background"
+        android:textSize="24sp"
+        android:hint="Password" />
+
+    <!-- Button to login -->
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/primary_background"
+        android:textSize="25sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="40sp"
+        android:layout_gravity="end"
+        android:hint="Login"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:height="60sp" />
+</LinearLayout>
