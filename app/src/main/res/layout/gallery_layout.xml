@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:background="@color/primary_background"
+    android:fitsSystemWindows="true"
+    tools:context=".GalleryActivity">
+
+    <!--    User Details  -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:gravity="top"
+        android:background="@color/primary_background"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <!--        TODO: replace text with number of posts -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/primary_background"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:id="@+id/num_posts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TODO: REPLACE WITH num_posts"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Sunsets"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!--        TODO: replace text with followers count-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="60sp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/primary_background"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:id="@+id/followers_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TODO: REPLACE WITH followers_count"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Followers"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!--        TODO: replace text with following count-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/primary_background"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:id="@+id/following_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TODO: REPLACE WITH following_count"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Following"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!--        TODO: replace text with biography-->
+    <TextView
+        android:id="@+id/biography"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:text="TODO: REPLACE WITH BIOGRAPHY VARIABLE"
+        android:textColor="@color/white" />
+
+    <!--    TODO: Create 2 dimensional List of ImageViews for gallery -->
+
+    <!--    TODO: Find a way to make this generic and import it in the other layouts -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/primary_background">
+            <!-- Navigation buttons -->
+            <Button
+                android:id="@+id/preferences_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#000000"
+                android:hint="SETTINGS"
+                android:textColorHint="@color/white" />
+
+            <Button
+                android:id="@+id/geo_map_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#000000"
+
+                android:hint="GEO"
+                android:textColorHint="@color/white" />
+
+            <Button
+                android:id="@+id/gallery_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#000000"
+                android:hint="GALLERY"
+                android:textColorHint="@color/white" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

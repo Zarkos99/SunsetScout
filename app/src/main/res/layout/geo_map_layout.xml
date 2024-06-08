@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:background="@color/primary_background"
+    android:fitsSystemWindows="true"
+    tools:context=".GeoMapActivity">
+
+    <EditText
+        android:id="@+id/search_field"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginBottom="20sp"
+        android:background="@drawable/input_field"
+        android:gravity="center"
+        android:textColorHint="@color/primary_background"
+        android:textSize="24sp"
+        android:hint="Search for sunsets" />
+
+    <!--    TODO: Find a way to make this generic and import it in the other layouts -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="bottom"
+        android:background="@color/primary_background">
+        <!-- Navigation buttons -->
+        <Button
+            android:id="@+id/preferences_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#000000"
+            android:hint="SETTINGS"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/geo_map_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#000000"
+
+            android:hint="GEO"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/gallery_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#000000"
+            android:hint="GALLERY"
+            android:textColorHint="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

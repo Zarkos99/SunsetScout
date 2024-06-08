@@ -1,15 +1,14 @@
 package sweng888.project.sunsetscout
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : AppCompatActivity() {
+class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             if (username.isEmpty()) {
                 //Display error message
                 Toast.makeText(
-                    this@MainActivity,
+                    this@AuthenticationActivity,
                     "Please input your username",
                     Toast.LENGTH_LONG
                 ).show()
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             if (password.isEmpty()) {
                 //Display error message
                 Toast.makeText(
-                    this@MainActivity,
+                    this@AuthenticationActivity,
                     "Please input your password",
                     Toast.LENGTH_LONG
                 ).show()
@@ -47,6 +46,8 @@ class MainActivity : AppCompatActivity() {
 
             //TODO: if invalid username and password, show toast that username or password is invalid
             //TODO: if valid username and password, display Geo View - enlarged map
+            val intent = Intent(this@AuthenticationActivity, GeoMapActivity::class.java)
+            startActivity(intent)
         }
     }
 }
