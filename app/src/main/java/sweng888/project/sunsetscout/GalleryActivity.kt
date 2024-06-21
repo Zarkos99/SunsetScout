@@ -15,6 +15,9 @@ class GalleryActivity : AppCompatActivity() {
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val geo_map_button_view = findViewById<Button>(R.id.geo_map_button)
 
+        val database_helper = UserDatabaseHelper(this)
+        var user =
+            database_helper.getUser("TODO: ENTER USERNAME TO FIND USER THIS PAGE IS RELEVANT TO")
 
         preferences_button_view.setOnClickListener {
             val intent = Intent(this@GalleryActivity, PreferencesActivity::class.java)

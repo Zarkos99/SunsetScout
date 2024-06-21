@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">SunsetSc🌄ut</string>
-    <string name="database_name">SunsetsDatabase</string>
+    <string name="database_name">UsersDatabase</string>
 </resources>

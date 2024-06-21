@@ -6,6 +6,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 class GeoMapActivity : AppCompatActivity() {
 
@@ -18,8 +20,8 @@ class GeoMapActivity : AppCompatActivity() {
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val gallery_button_view = findViewById<Button>(R.id.gallery_button)
 
-        val product_database_helper = SunsetDatabaseHelper(this)
-        var sunsets = product_database_helper.getAllSunsets()
+        val database_helper = UserDatabaseHelper(this)
+        var all_users = database_helper.getAllUsers()
 
         //TODO: Hook up search bar
 
@@ -32,5 +34,62 @@ class GeoMapActivity : AppCompatActivity() {
             val intent = Intent(this@GeoMapActivity, GalleryActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun populateDatabaseWithFakeData(db_helper: UserDatabaseHelper) {
+        var fake_sunset_1 = SunsetData(
+            "55.751244",
+            "37.618423",
+            DateTimeFormatter.ISO_INSTANT.format(
+                Instant.now()
+            ),
+            "The sunset here was incredible but the cold was biting, travel at your own risk!",
+            "TODO"
+        )
+        var fake_sunset_2 = SunsetData(
+            "-73.0500",
+            "-13.4167",
+            DateTimeFormatter.ISO_INSTANT.format(
+                Instant.now()
+            ),
+            "The sunset here was so beautiful... Photo is a bit blurry because I was being chased by a polar bear, so much fun!",
+            "TODO"
+        )
+        var fake_sunset_3 = SunsetData(
+            "-48.876667",
+            "-123.393333",
+            DateTimeFormatter.ISO_INSTANT.format(
+                Instant.now()
+            ),
+            "Not sure how I got here but I managed to snap a quick pic.",
+            "TODO"
+        )
+
+        var new_user =
+            User(
+                "JohnDoe123",
+                "johndoeiscool@gmail.com",
+                "I am John Doe. Fear me.",
+                arrayListOf(fake_sunset_1)
+            )
+        db_helper.addUserToDatabase(new_user)
+
+        new_user =
+            User(
+                "C00lK1D",
+                "coolkid24@hotmail.com",
+                "Coolest kid on the block",
+                arrayListOf(fake_sunset_1, fake_sunset_2)
+            )
+        db_helper.addUserToDatabase(new_user)
+
+        new_user =
+            User(
+                "RemoteWorker",
+                "worksremote@gmail.com",
+                "Working remotely",
+                arrayListOf(fake_sunset_1, fake_sunset_2, fake_sunset_3)
+            )
+        db_helper.addUserToDatabase(new_user)
     }
 }
