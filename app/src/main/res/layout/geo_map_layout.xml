@@ -23,6 +23,8 @@
         android:textSize="24sp"
         android:hint="Search for sunsets" />
 
+    <!--    TODO: Use recyclerview for list of sunsets -->
+
     <!--    TODO: Find a way to make this generic and import it in the other layouts -->
     <LinearLayout
         android:orientation="horizontal"
@@ -46,7 +48,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#000000"
-
             android:hint="GEO"
             android:textColorHint="@color/white" />
 

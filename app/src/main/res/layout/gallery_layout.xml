@@ -25,6 +25,14 @@
             android:layout_height="match_parent"
             android:layout_weight="2" />
 
+        <!--        public username display -->
+        <TextView
+            android:id="@+id/public_username"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="TODO: REPLACE THIS WITH PUBLIC USERNAME"
+            android:textColor="@color/white" />
+
         <!--        TODO: replace text with number of posts -->
         <LinearLayout
             android:orientation="vertical"
@@ -46,54 +54,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Sunsets"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <!--        TODO: replace text with followers count-->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="60sp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="@color/primary_background"
-            android:fitsSystemWindows="true">
-
-            <TextView
-                android:id="@+id/followers_count"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="TODO: REPLACE WITH followers_count"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Followers"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <!--        TODO: replace text with following count-->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="@color/primary_background"
-            android:fitsSystemWindows="true">
-
-            <TextView
-                android:id="@+id/following_count"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="TODO: REPLACE WITH following_count"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Following"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

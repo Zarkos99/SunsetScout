@@ -18,13 +18,16 @@ class GeoMapActivity : AppCompatActivity() {
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val gallery_button_view = findViewById<Button>(R.id.gallery_button)
 
+        val product_database_helper = SunsetDatabaseHelper(this)
+        var sunsets = product_database_helper.getAllSunsets()
+
         //TODO: Hook up search bar
 
         preferences_button_view.setOnClickListener {
             val intent = Intent(this@GeoMapActivity, PreferencesActivity::class.java)
             startActivity(intent)
         }
-        
+
         gallery_button_view.setOnClickListener {
             val intent = Intent(this@GeoMapActivity, GalleryActivity::class.java)
             startActivity(intent)
