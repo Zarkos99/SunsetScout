@@ -14,12 +14,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  */
 class GallerySunsetPostsAdapter(
     private val context: Context,
-    private val sunsets: List<SunsetData>
+    private val database: UserDatabaseHelper,
+    private val username: String
 ) :
     RecyclerView.Adapter<GallerySunsetPostsAdapter.ViewHolder>() {
 
     // Array of product names
     var selected_sunsets = ArrayList<SunsetData>()
+    var item_selected_callbacks = ArrayList<(() -> Unit)>()
 
     /**
      * Handles creation of the view holder for each item in the recyclerview
@@ -35,7 +37,7 @@ class GallerySunsetPostsAdapter(
      * Handles binding of the view holder for each item in the recyclerview
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val sunset = sunsets[position]
+        val sunset = database.getUser(username).posts[position]
         // Fill the text views with high-level information on the products
         holder.sunset_image_view.setImageURI(sunset.image_uri)
 
@@ -43,16 +45,25 @@ class GallerySunsetPostsAdapter(
         // Provides logic to track all selected products as the user selects them
         holder.setItemClickListener(object : ViewHolder.ItemClickListener {
             override fun onItemClick(v: View, pos: Int) {
-                val current_sunset = sunsets[pos]
+                val current_sunset = database.getUser(username).posts[pos]
 
                 if (selected_sunsets.contains(current_sunset)) {
                     selected_sunsets.remove(current_sunset)
                 } else {
                     selected_sunsets.add(current_sunset)
                 }
-                Log.e("DEBUG", selected_sunsets.toString())
+
+                if (item_selected_callbacks.size > 0) {
+                    for (callback in item_selected_callbacks) {
+                        callback()
+                    }
+                }
             }
         })
+    }
+
+    fun registerItemSelectedCallback(callback: (() -> Unit)) {
+        item_selected_callbacks.add(callback)
     }
 
     /**
@@ -62,11 +73,28 @@ class GallerySunsetPostsAdapter(
         return selected_sunsets
     }
 
+    fun clearSelectedSunsets() {
+        selected_sunsets.clear()
+
+        if (item_selected_callbacks.size > 0) {
+            for (callback in item_selected_callbacks) {
+                callback()
+            }
+        }
+    }
+
+    /**
+     * Gets all of the items in the recyclerview
+     */
+    fun getSelectedItemCount(): Int {
+        return selected_sunsets.size
+    }
+
     /**
      * Gets all of the items in the recyclerview
      */
     override fun getItemCount(): Int {
-        return sunsets.size
+        return database.getUser(username).posts.size
     }
 
     /**

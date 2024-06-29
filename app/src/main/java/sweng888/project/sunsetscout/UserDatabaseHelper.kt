@@ -1,11 +1,12 @@
 package sweng888.project.sunsetscout
 
-import android.R.id
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor.FIELD_TYPE_NULL
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
@@ -15,6 +16,7 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
+import java.io.IOException
 import java.lang.reflect.Type
 
 
@@ -26,7 +28,7 @@ class UserDatabaseHelper(private val context: Context) :
     override fun onCreate(db: SQLiteDatabase) {
         val query =
             ("CREATE TABLE " + table_name + " (" +
-                    username_key + " TEXT," +
+                    username_key + " TEXT NOT NULL," +
                     email_key + " TEXT," +
                     biography_key + " TEXT," +
                     posts_key + " TEXT" +
@@ -54,8 +56,19 @@ class UserDatabaseHelper(private val context: Context) :
 
         if (users_db_cursor.moveToFirst()) {
             do {
-                // on below line we are adding the data from
+                // on the below lines we are adding the data from
                 // cursor to our array list.
+                var posts = ArrayList<SunsetData>()
+                if (users_db_cursor.getType(users_db_cursor.getColumnIndexOrThrow(posts_key)) != FIELD_TYPE_NULL) {
+                    posts = deserializePosts(
+                        users_db_cursor.getString(
+                            users_db_cursor.getColumnIndexOrThrow(
+                                posts_key
+                            )
+                        )
+                    )
+                }
+
                 users_array_list.add(
                     User(
                         users_db_cursor.getString(
@@ -73,13 +86,7 @@ class UserDatabaseHelper(private val context: Context) :
                                 biography_key
                             )
                         ),
-                        deserializePosts(
-                            users_db_cursor.getString(
-                                users_db_cursor.getColumnIndexOrThrow(
-                                    posts_key
-                                )
-                            )
-                        )
+                        posts
                     )
                 )
             } while (users_db_cursor.moveToNext())
@@ -101,6 +108,17 @@ class UserDatabaseHelper(private val context: Context) :
         var user = User()
 
         if (users_db_cursor.moveToFirst()) {
+            var posts = ArrayList<SunsetData>()
+            if (users_db_cursor.getType(users_db_cursor.getColumnIndexOrThrow(posts_key)) != FIELD_TYPE_NULL) {
+                posts = deserializePosts(
+                    users_db_cursor.getString(
+                        users_db_cursor.getColumnIndexOrThrow(
+                            posts_key
+                        )
+                    )
+                )
+            }
+
             // on below line we are adding the data from
             // cursor to our array list.
             user = User(
@@ -119,13 +137,7 @@ class UserDatabaseHelper(private val context: Context) :
                         biography_key
                     )
                 ),
-                deserializePosts(
-                    users_db_cursor.getString(
-                        users_db_cursor.getColumnIndexOrThrow(
-                            posts_key
-                        )
-                    )
-                )
+                posts
             )
         }
 
@@ -143,8 +155,24 @@ class UserDatabaseHelper(private val context: Context) :
         values.put(username_key, user.username)
         values.put(email_key, user.email)
         values.put(biography_key, user.biography)
+        values.put(posts_key, serializePosts(ArrayList()))
         database.insert(table_name, null, values)
         database.close()
+    }
+
+    /**
+     * Delete all sunsets based on unique_id for specified user. Returns updated posts array if needed
+     */
+    fun deleteSelectedSunsets(
+        username: String,
+        sunsets: ArrayList<SunsetData>
+    ): ArrayList<SunsetData> {
+        var user = getUser(username)
+        for (sunset in sunsets) {
+            user.posts.removeAll { it.unique_id == sunset.unique_id }
+        }
+        updateUserPosts(username, user.posts)
+        return user.posts
     }
 
     fun getUserPosts(username: String): ArrayList<SunsetData> {
@@ -184,6 +212,10 @@ class UserDatabaseHelper(private val context: Context) :
         ) > 0
     }
 
+    @Throws(IOException::class)
+    fun readBytes(context: Context, uri: Uri): ByteArray? =
+        context.contentResolver.openInputStream(uri)?.use { it.buffered().readBytes() }
+
     /**
      * Convert the posts member variable to a serialized json string for database storage or activity communication
      */
@@ -198,9 +230,10 @@ class UserDatabaseHelper(private val context: Context) :
         val type: Type = object : TypeToken<ArrayList<SunsetData?>?>() {}.type
         val gson =
             GsonBuilder().registerTypeHierarchyAdapter(Uri::class.java, UriTypeAdapter).create()
-        val unserialized_posts: ArrayList<SunsetData> = gson.fromJson(json_string_posts, type)
+        val deserialized_posts: ArrayList<SunsetData> = gson.fromJson(json_string_posts, type)
 
-        return unserialized_posts
+        Log.e("DEBUG", deserialized_posts.toString())
+        return deserialized_posts
     }
 
 

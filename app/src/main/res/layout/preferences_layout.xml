@@ -29,48 +29,16 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"></ListView>
 
-    <!--    TODO: Find a way to make this generic and import it in the other layouts -->
+    <!--    Navigation Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <include
+            layout="@layout/navigation_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/primary_background">
-            <!-- Navigation buttons -->
-            <Button
-                android:id="@+id/preferences_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#000000"
-                android:hint="SETTINGS"
-                android:textColorHint="@color/white" />
-
-            <Button
-                android:id="@+id/geo_map_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#000000"
-
-                android:hint="GEO"
-                android:textColorHint="@color/white" />
-
-            <Button
-                android:id="@+id/gallery_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#000000"
-                android:hint="GALLERY"
-                android:textColorHint="@color/white" />
-        </LinearLayout>
+            android:layout_alignParentBottom="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </LinearLayout>

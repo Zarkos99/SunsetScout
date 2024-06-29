@@ -15,7 +15,7 @@ data class User(
     val username: String = "",
     val email: String = "",
     val biography: String = "",
-    val posts: ArrayList<SunsetData> = ArrayList()
+    var posts: ArrayList<SunsetData> = ArrayList()
 ) :
     Parcelable
 
@@ -25,6 +25,8 @@ data class SunsetData(
     val longitude: String = "",
     val post_time: String = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),
     val description: String = "",
-    val image_uri: Uri?
+    val image_uri: Uri? = Uri.EMPTY
 ) :
-    Parcelable
+    Parcelable {
+    val unique_id: Int get() = hashCode()
+}

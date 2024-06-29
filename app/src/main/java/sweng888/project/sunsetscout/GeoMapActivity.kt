@@ -21,8 +21,12 @@ class GeoMapActivity : AppCompatActivity() {
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val gallery_button_view = findViewById<Button>(R.id.gallery_button)
 
+        this.deleteDatabase(this.getString(R.string.database_name)) //TODO: delete this
         val database_helper = UserDatabaseHelper(this)
-        populateDatabaseWithFakeData(database_helper)
+        populateDatabaseWithFakeUsers(database_helper)
+
+        var user =
+            database_helper.getUser("JohnDoe123")
 
         //TODO: Hook up search bar
 
@@ -37,7 +41,7 @@ class GeoMapActivity : AppCompatActivity() {
         }
     }
 
-    fun populateDatabaseWithFakeData(db_helper: UserDatabaseHelper) {
+    fun populateDatabaseWithFakeUsers(db_helper: UserDatabaseHelper) {
 //        var fake_sunset_1 = SunsetData(
 //            "55.751244",
 //            "37.618423",
