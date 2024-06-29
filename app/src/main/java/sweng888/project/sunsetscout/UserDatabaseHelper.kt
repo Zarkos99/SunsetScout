@@ -228,11 +228,8 @@ class UserDatabaseHelper(private val context: Context) :
      */
     fun deserializePosts(json_string_posts: String): ArrayList<SunsetData> {
         val type: Type = object : TypeToken<ArrayList<SunsetData?>?>() {}.type
-        val gson =
-            GsonBuilder().registerTypeHierarchyAdapter(Uri::class.java, UriTypeAdapter).create()
-        val deserialized_posts: ArrayList<SunsetData> = gson.fromJson(json_string_posts, type)
+        val deserialized_posts: ArrayList<SunsetData> = Gson().fromJson(json_string_posts, type)
 
-        Log.e("DEBUG", deserialized_posts.toString())
         return deserialized_posts
     }
 

@@ -1,6 +1,7 @@
 package sweng888.project.sunsetscout
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,8 @@ class GallerySunsetPostsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val sunset = database.getUser(username).posts[position]
         // Fill the text views with high-level information on the products
-        holder.sunset_image_view.setImageURI(sunset.image_uri)
+
+        holder.sunset_image_view.setImageURI(Uri.parse(sunset.image_path))
 
 
         // Provides logic to track all selected products as the user selects them

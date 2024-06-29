@@ -86,7 +86,7 @@ class GalleryActivity : AppCompatActivity() {
                     Instant.now()
                 ),
                 description = "Not sure how I got here but I managed to snap a quick pic.",
-                image_uri = uri
+                image_path = uri.toString()
             )
 
             user.posts.add(fake_sunset_data)

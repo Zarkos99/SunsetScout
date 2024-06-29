@@ -21,7 +21,6 @@ class GeoMapActivity : AppCompatActivity() {
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val gallery_button_view = findViewById<Button>(R.id.gallery_button)
 
-        this.deleteDatabase(this.getString(R.string.database_name)) //TODO: delete this
         val database_helper = UserDatabaseHelper(this)
         populateDatabaseWithFakeUsers(database_helper)
 
