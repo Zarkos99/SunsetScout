@@ -38,6 +38,7 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.runtime.android)
     val fragment_version = "1.8.0"
 
     // Kotlin

@@ -1,5 +1,9 @@
 package sweng888.project.sunsetscout
 
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.time.Instant
@@ -11,10 +15,9 @@ data class User(
     val username: String = "",
     val email: String = "",
     val biography: String = "",
-    val posts: ArrayList<SunsetData> = ArrayList<SunsetData>()
+    val posts: ArrayList<SunsetData> = ArrayList()
 ) :
-    Parcelable {
-}
+    Parcelable
 
 @Parcelize
 data class SunsetData(
@@ -22,8 +25,6 @@ data class SunsetData(
     val longitude: String = "",
     val post_time: String = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),
     val description: String = "",
-    val image: String = ""
+    val image_uri: Uri?
 ) :
-    Parcelable {
-}
-
+    Parcelable

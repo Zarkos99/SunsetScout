@@ -1,12 +1,22 @@
 package sweng888.project.sunsetscout
 
+import android.R.id
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.net.Uri
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
+
 
 class UserDatabaseHelper(private val context: Context) :
     SQLiteOpenHelper(
@@ -63,7 +73,7 @@ class UserDatabaseHelper(private val context: Context) :
                                 biography_key
                             )
                         ),
-                        unserializePosts(
+                        deserializePosts(
                             users_db_cursor.getString(
                                 users_db_cursor.getColumnIndexOrThrow(
                                     posts_key
@@ -109,7 +119,7 @@ class UserDatabaseHelper(private val context: Context) :
                         biography_key
                     )
                 ),
-                unserializePosts(
+                deserializePosts(
                     users_db_cursor.getString(
                         users_db_cursor.getColumnIndexOrThrow(
                             posts_key
@@ -133,9 +143,45 @@ class UserDatabaseHelper(private val context: Context) :
         values.put(username_key, user.username)
         values.put(email_key, user.email)
         values.put(biography_key, user.biography)
-        values.put(posts_key, serializePosts(user.posts))
         database.insert(table_name, null, values)
         database.close()
+    }
+
+    fun getUserPosts(username: String): ArrayList<SunsetData> {
+
+        val db = readableDatabase
+        val users_db_cursor =
+            db.rawQuery("SELECT * FROM $table_name WHERE $username_key = '$username'", null)
+        var user_posts = ArrayList<SunsetData>()
+
+        if (users_db_cursor.moveToFirst()) {
+            // on below line we are adding the data from
+            // cursor to our array list.
+            user_posts =
+                deserializePosts(
+                    users_db_cursor.getString(
+                        users_db_cursor.getColumnIndexOrThrow(
+                            posts_key
+                        )
+                    )
+                )
+        }
+
+        users_db_cursor.close()
+        db.close()
+        return user_posts
+    }
+
+    fun updateUserPosts(username: String, user_posts: ArrayList<SunsetData>): Boolean {
+        val db = writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(posts_key, serializePosts(user_posts))
+        return db.update(
+            table_name,
+            contentValues,
+            username_key + " = ?",
+            arrayOf<String>(username)
+        ) > 0
     }
 
     /**
@@ -148,9 +194,11 @@ class UserDatabaseHelper(private val context: Context) :
     /**
      * Convert a serialized json string of ArrayList<SunsetData> back to an ArrayList<SunsetData>
      */
-    fun unserializePosts(json_string_posts: String): ArrayList<SunsetData> {
+    fun deserializePosts(json_string_posts: String): ArrayList<SunsetData> {
         val type: Type = object : TypeToken<ArrayList<SunsetData?>?>() {}.type
-        val unserialized_posts: ArrayList<SunsetData> = Gson().fromJson(json_string_posts, type)
+        val gson =
+            GsonBuilder().registerTypeHierarchyAdapter(Uri::class.java, UriTypeAdapter).create()
+        val unserialized_posts: ArrayList<SunsetData> = gson.fromJson(json_string_posts, type)
 
         return unserialized_posts
     }
@@ -164,4 +212,21 @@ class UserDatabaseHelper(private val context: Context) :
         val posts_key: String = "posts"
     }
 
+}
+
+object UriTypeAdapter : JsonDeserializer<Uri?>, JsonSerializer<Uri?> {
+    override fun deserialize(
+        json: JsonElement,
+        type: Type?,
+        context: JsonDeserializationContext?
+    ): Uri = runCatching {
+        Uri.parse(json.asString)
+    }.getOrDefault(Uri.EMPTY)
+
+    override fun serialize(
+        src: Uri?,
+        type: Type?,
+        context: JsonSerializationContext?
+    ): JsonElement =
+        JsonPrimitive(src.toString())
 }
