@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.File
 
 /**
  * The adaptor for a recyclerview of products with the capability to have selectable items or not
@@ -39,10 +40,14 @@ class GallerySunsetPostsAdapter(
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val sunset = database.getUser(username).posts[position]
-        // Fill the text views with high-level information on the products
 
+        // Fill the text views with high-level information on the products
         holder.sunset_image_view.setImageURI(Uri.parse(sunset.image_path))
 
+        // Below line fixes a bug where deleted sunset checkboxes would positionally
+        // associate to next undeleted sunsets at same position by defaulting onBind checkbox
+        // to not visible
+        holder.sunset_checkbox.visibility = View.GONE
 
         // Provides logic to track all selected products as the user selects them
         holder.setItemClickListener(object : ViewHolder.ItemClickListener {
@@ -50,9 +55,11 @@ class GallerySunsetPostsAdapter(
                 val current_sunset = database.getUser(username).posts[pos]
 
                 if (selected_sunsets.contains(current_sunset)) {
+                    holder.sunset_checkbox.visibility = View.GONE
                     selected_sunsets.remove(current_sunset)
                 } else {
                     selected_sunsets.add(current_sunset)
+                    holder.sunset_checkbox.visibility = View.VISIBLE
                 }
 
                 if (item_selected_callbacks.size > 0) {
@@ -123,12 +130,6 @@ class GallerySunsetPostsAdapter(
          */
         override fun onClick(v: View) {
             this.sunset_click_listener.onItemClick(v, layoutPosition)
-
-            if (sunset_checkbox.visibility == View.VISIBLE) {
-                sunset_checkbox.visibility = View.GONE
-            } else {
-                sunset_checkbox.visibility = View.VISIBLE
-            }
         }
 
         interface ItemClickListener {

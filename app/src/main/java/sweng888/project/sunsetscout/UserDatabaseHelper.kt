@@ -165,13 +165,18 @@ class UserDatabaseHelper(private val context: Context) :
      */
     fun deleteSelectedSunsets(
         username: String,
-        sunsets: ArrayList<SunsetData>
+        selected_sunsets: ArrayList<SunsetData>
     ): ArrayList<SunsetData> {
-        var user = getUser(username)
-        for (sunset in sunsets) {
+        val user = getUser(username)
+        for (sunset in selected_sunsets) {
             user.posts.removeAll { it.unique_id == sunset.unique_id }
         }
-        updateUserPosts(username, user.posts)
+        if (!updateUserPosts(username, user.posts)) {
+            Log.e(
+                "DEBUG: database error",
+                "Did not delete any rows in database for the following sunsets: " + user.posts.toString()
+            )
+        }
         return user.posts
     }
 
@@ -208,13 +213,9 @@ class UserDatabaseHelper(private val context: Context) :
             table_name,
             contentValues,
             username_key + " = ?",
-            arrayOf<String>(username)
+            arrayOf(username)
         ) > 0
     }
-
-    @Throws(IOException::class)
-    fun readBytes(context: Context, uri: Uri): ByteArray? =
-        context.contentResolver.openInputStream(uri)?.use { it.buffered().readBytes() }
 
     /**
      * Convert the posts member variable to a serialized json string for database storage or activity communication

@@ -20,32 +20,39 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.w3c.dom.Text
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 
 
 class GalleryActivity : AppCompatActivity() {
 
+    private lateinit var public_username_text_view: TextView
+    private lateinit var num_posts_text_view: TextView
+    private lateinit var biography_text_view: TextView
+    private lateinit var database_helper: UserDatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.gallery_layout)
 
-        val public_username_text_view = findViewById<TextView>(R.id.public_username)
-        val num_posts_text_view = findViewById<TextView>(R.id.num_posts)
-        val biography_text_view = findViewById<TextView>(R.id.biography)
+        public_username_text_view = findViewById(R.id.public_username)
+        num_posts_text_view = findViewById(R.id.num_posts)
+        biography_text_view = findViewById(R.id.biography)
         val sunsets_recycler_view = findViewById<RecyclerView>(R.id.gallery_sunsets)
         val add_or_remove_sunset_button_view = findViewById<Button>(R.id.add_sunset_button)
         //Navigation buttons
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val geo_map_button_view = findViewById<Button>(R.id.geo_map_button)
 
-        val database_helper = UserDatabaseHelper(this)
-        var user =
-            database_helper.getUser("JohnDoe123")
+        database_helper = UserDatabaseHelper(this)
+
+        var username = "JohnDoe123"
+        populateTextViewsWithUserInfo(username)
 
         // Initialize recyclerview adaptor
-        val sunset_list_adaptor = GallerySunsetPostsAdapter(this, database_helper, user.username)
+        val sunset_list_adaptor = GallerySunsetPostsAdapter(this, database_helper, username)
         sunset_list_adaptor.registerItemSelectedCallback {
             val selected_sunsets = sunset_list_adaptor.getSelectedSunsets()
             if (selected_sunsets.size > 0) {
@@ -65,15 +72,6 @@ class GalleryActivity : AppCompatActivity() {
         }
         sunsets_recycler_view.layoutManager = layout_manager
 
-        // Fill user data text fields
-        public_username_text_view.setText(user.username)
-        biography_text_view.setText(user.biography)
-        num_posts_text_view.setText(
-            resources.getString(
-                R.string.num_posts,
-                user.posts.size
-            )
-        )
 
         // Allow user to add sunsets
         val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
@@ -89,15 +87,16 @@ class GalleryActivity : AppCompatActivity() {
                 image_path = uri.toString()
             )
 
+            val user = database_helper.getUser(username)
             user.posts.add(fake_sunset_data)
-            database_helper.updateUserPosts(user.username, user.posts)
+            database_helper.updateUserPosts(username, user.posts)
             sunset_list_adaptor.notifyDataSetChanged()
         }
         add_or_remove_sunset_button_view.setOnClickListener {
             val selected_sunsets = sunset_list_adaptor.getSelectedSunsets()
             if (selected_sunsets.size > 0) {
                 //Change add sunset button to remove sunset functionality when sunsets are selected
-                database_helper.deleteSelectedSunsets(user.username, selected_sunsets)
+                database_helper.deleteSelectedSunsets(username, selected_sunsets)
                 sunset_list_adaptor.clearSelectedSunsets()
                 sunset_list_adaptor.notifyDataSetChanged()
             } else {
@@ -114,5 +113,20 @@ class GalleryActivity : AppCompatActivity() {
             val intent = Intent(this@GalleryActivity, GeoMapActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun populateTextViewsWithUserInfo(
+        username: String
+    ) {
+        // Fill user data text fields
+        val user = database_helper.getUser(username)
+        public_username_text_view.setText(username)
+        biography_text_view.setText(user.biography)
+        num_posts_text_view.setText(
+            resources.getString(
+                R.string.num_posts,
+                user.posts.size
+            )
+        )
     }
 }
