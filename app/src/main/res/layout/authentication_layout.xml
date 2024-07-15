@@ -40,7 +40,8 @@
         android:gravity="center"
         android:textColorHint="@color/primary_background"
         android:textSize="24sp"
-        android:hint="Password" />
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <!-- Button to login -->
     <Button
@@ -52,7 +53,21 @@
         android:layout_marginTop="15sp"
         android:layout_marginEnd="40sp"
         android:layout_gravity="end"
-        android:hint="Login"
+        android:text="Login"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:height="60sp" />
+
+    <!-- Button to register -->
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/primary_background"
+        android:textSize="25sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="40sp"
+        android:layout_gravity="end"
+        android:text="Register"
         android:backgroundTint="@android:color/holo_orange_dark"
         android:height="60sp" />
 </LinearLayout>
