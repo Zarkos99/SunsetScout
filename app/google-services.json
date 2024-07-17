@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "470044870285",
+    "project_id": "android-dev-class-888",
+    "storage_bucket": "android-dev-class-888.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470044870285:android:9f264d5a31848547bc84c4",
+        "android_client_info": {
+          "package_name": "sweng888.project.sunsetscout"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwmWOl7PsLkEdMkmSi39ipLet1ZfEtDlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
