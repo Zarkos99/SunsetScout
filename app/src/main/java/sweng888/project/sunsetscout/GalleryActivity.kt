@@ -2,6 +2,7 @@ package sweng888.project.sunsetscout
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -42,10 +43,12 @@ class GalleryActivity : AppCompatActivity() {
         biography_text_view = findViewById(R.id.biography)
         val sunsets_recycler_view = findViewById<RecyclerView>(R.id.gallery_sunsets)
         val add_or_remove_sunset_button_view = findViewById<Button>(R.id.add_sunset_button)
+        val profile_image_view = findViewById<ImageView>(R.id.profile_picture_view)
         //Navigation buttons
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val geo_map_button_view = findViewById<Button>(R.id.geo_map_button)
 
+        profile_image_view.setImageDrawable(getImage("default_profile_pic"))
         database_helper = UserDatabaseHelper(this)
 
         var username = "JohnDoe123"
@@ -126,6 +129,19 @@ class GalleryActivity : AppCompatActivity() {
             resources.getString(
                 R.string.num_posts,
                 user.posts.size
+            )
+        )
+    }
+
+    /**
+     * Dynamically obtains stored drawable images by name
+     */
+    private fun getImage(ImageName: String?): Drawable {
+        return this@GalleryActivity.resources.getDrawable(
+            this@GalleryActivity.resources.getIdentifier(
+                ImageName,
+                "drawable",
+                this@GalleryActivity.packageName
             )
         )
     }
