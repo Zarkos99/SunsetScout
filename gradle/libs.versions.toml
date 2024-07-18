@@ -1,6 +1,7 @@
 [versions]
 agp = "8.4.1"
 firebaseBom = "33.1.2"
+firebaseUiStorage = "7.2.0"
 flexbox = "3.0.0"
 googleServices = "4.4.2"
 gson = "2.11.0"
@@ -22,6 +23,8 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
+firebase-ui-storage = { module = "com.firebaseui:firebase-ui-storage", version.ref = "firebaseUiStorage" }
 flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

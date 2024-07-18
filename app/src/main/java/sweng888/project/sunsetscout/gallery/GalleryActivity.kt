@@ -18,6 +18,8 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import sweng888.project.sunsetscout.R
 import sweng888.project.sunsetscout.data.SunsetData
 import sweng888.project.sunsetscout.database.*
@@ -73,18 +75,19 @@ class GalleryActivity : AppCompatActivity() {
         // Create intent to open device storage for image selection
         m_select_image_intent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
-            //TODO: Replace this fake data with new activity to input this data
-            var fake_sunset_data = SunsetData(
-                latitude = "-48.876667",
-                longitude = "-123.393333",
-                post_time = DateTimeFormatter.ISO_INSTANT.format(
-                    Instant.now()
-                ),
-                description = "Not sure how I got here but I managed to snap a quick pic.",
-                image_path = uri.toString()
-            )
+            if (uri != null) {
+                //TODO: Replace this fake data with new activity to input this data
+                var fake_sunset_data = SunsetData(
+                    latitude = "-48.876667",
+                    longitude = "-123.393333",
+                    post_time = DateTimeFormatter.ISO_INSTANT.format(
+                        Instant.now()
+                    ),
+                    description = "Not sure how I got here but I managed to snap a quick pic."
+                )
 
-            addSunsetPost(fake_sunset_data)
+                uploadImageAndCreateNewPost(fake_sunset_data, uri)
+            }
         }
 
         //Navigation buttons
@@ -135,7 +138,7 @@ class GalleryActivity : AppCompatActivity() {
             val selected_sunsets = m_sunset_list_adaptor.getSelectedSunsets()
             if (selected_sunsets.size > 0) {
                 //Change add sunset button to remove sunset functionality when sunsets are selected
-                removeSunsetPosts(selected_sunsets)
+                deleteImageAndPosts(selected_sunsets)
             } else {
                 m_select_image_intent.launch("image/*")
             }

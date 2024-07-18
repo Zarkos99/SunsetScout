@@ -19,7 +19,7 @@ data class SunsetData(
     val longitude: String? = "",
     val post_time: String? = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),
     val description: String? = "",
-    val image_path: String? = ""
+    var cloud_image_path: String? = ""
 ) :
     Parcelable {
     val unique_id: Int get() = hashCode()

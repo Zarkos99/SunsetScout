@@ -1,5 +1,6 @@
 package sweng888.project.sunsetscout.database
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -26,7 +27,7 @@ fun getCurrentUsername(): String {
     return username.toString()
 }
 
-fun addSunsetPost(post: SunsetData) {
+fun addSunsetPostToDatabase(post: SunsetData) {
     val firebase_database = Firebase.firestore
     val username = getCurrentUsername()
 
@@ -38,10 +39,11 @@ fun addSunsetPost(post: SunsetData) {
     user_ref.update(Strings.get(R.string.posts_array_name), FieldValue.arrayUnion(post))
 }
 
-fun removeSunsetPosts(posts_to_remove: ArrayList<SunsetData>) {
+fun removeSunsetPostFromDatabase(post_to_remove: SunsetData) {
     val firebase_database = Firebase.firestore
     val username = getCurrentUsername()
 
+    // Delete post in database
     val user_ref =
         firebase_database.collection(
             Strings.get(R.string.firebase_collection_name)
@@ -51,10 +53,7 @@ fun removeSunsetPosts(posts_to_remove: ArrayList<SunsetData>) {
         if (document != null) {
             val user = document.toObject<User>()
             if (user != null) {
-                Log.d("DEBUG", posts_to_remove.toString())
-                for (post_to_remove in posts_to_remove) {
-                    user.posts.removeIf { it.unique_id == post_to_remove.unique_id }
-                }
+                user.posts.removeIf { it.unique_id == post_to_remove.unique_id }
                 user_ref.set(user)
             }
         }
