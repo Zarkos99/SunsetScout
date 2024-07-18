@@ -41,10 +41,9 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
-    val fragment_version = "1.8.0"
 
     // Kotlin
-    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

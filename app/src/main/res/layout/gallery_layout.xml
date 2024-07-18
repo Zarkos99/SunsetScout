@@ -11,50 +11,45 @@
     tools:context=".gallery.GalleryActivity">
 
     <!--    User Details  -->
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="80sp"
         android:gravity="top"
         android:background="@color/primary_background"
         android:fitsSystemWindows="true">
 
         <ImageView
-            android:id="@+id/profile_picture"
+            android:id="@+id/profile_picture_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2" />
+            android:layout_weight="0.3" />
 
-        <!--        public username display -->
-        <TextView
-            android:id="@+id/public_username"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/white"
-            android:textAlignment="center" />
-
-        <!--        TODO: replace text with number of posts -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="80dp"
+            android:layout_weight="0.6"
+            android:gravity="top"
             android:background="@color/primary_background"
             android:fitsSystemWindows="true">
+            <!--        public username display -->
+            <TextView
+                android:id="@+id/public_username"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/num_posts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:textAlignment="center" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Sunsets"
-                android:textColor="@color/white"
+                android:textSize="25sp"
                 android:textAlignment="center" />
         </LinearLayout>
     </LinearLayout>
@@ -68,7 +63,8 @@
             android:id="@+id/biography"
             android:layout_width="wrap_content"
             android:layout_height="100sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/add_sunset_button"
