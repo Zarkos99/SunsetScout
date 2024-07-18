@@ -24,7 +24,8 @@
             android:id="@+id/profile_picture_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3" />
+            android:layout_weight="0.3"
+            android:contentDescription="Profile Picture" />
 
         <LinearLayout
             android:orientation="vertical"

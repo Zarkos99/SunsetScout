@@ -39,7 +39,7 @@ fun addSunsetPostToDatabase(post: SunsetData) {
     user_ref.update(Strings.get(R.string.posts_array_name), FieldValue.arrayUnion(post))
 }
 
-fun removeSunsetPostFromDatabase(post_to_remove: SunsetData) {
+fun removeSunsetPostsFromDatabase(posts_to_remove: ArrayList<SunsetData>) {
     val firebase_database = Firebase.firestore
     val username = getCurrentUsername()
 
@@ -53,7 +53,9 @@ fun removeSunsetPostFromDatabase(post_to_remove: SunsetData) {
         if (document != null) {
             val user = document.toObject<User>()
             if (user != null) {
-                user.posts.removeIf { it.unique_id == post_to_remove.unique_id }
+                for (post_to_remove in posts_to_remove) {
+                    user.posts.removeIf { it.unique_id == post_to_remove.unique_id }
+                }
                 user_ref.set(user)
             }
         }

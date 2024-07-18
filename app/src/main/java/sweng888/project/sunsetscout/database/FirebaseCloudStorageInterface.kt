@@ -32,33 +32,21 @@ fun uploadImageAndCreateNewPost(post: SunsetData, file: Uri) {
     }
 }
 
-fun deleteImageAndPosts(posts_to_remove: ArrayList<SunsetData>) {
+fun deleteImagesAndPosts(posts_to_remove: ArrayList<SunsetData>) {
     val m_firebase_storage = Firebase.storage
     // Create a storage reference from our app
     val storage_ref = m_firebase_storage.reference
 
     // Delete images from cloud storage
-    for (post_to_remove in posts_to_remove) {
+    posts_to_remove.forEach { post_to_remove ->
         if (!post_to_remove.cloud_image_path.isNullOrEmpty()) {
             val image_ref = storage_ref.child(post_to_remove.cloud_image_path!!)
             image_ref.delete().addOnFailureListener {
                 // Handle unsuccessful deletion
                 Log.e("Image Storage Deletion Error", "Unable to delete image: $it")
-            }.addOnSuccessListener { removeSunsetPostFromDatabase(post_to_remove) }
+            }
         }
     }
 
-
-}
-
-fun getImage(cloud_file_path: String) {
-    val m_firebase_storage = Firebase.storage
-    // Create a storage reference from our app
-    val storage_ref = m_firebase_storage.reference
-
-    val image_ref = storage_ref.child(cloud_file_path)
-    image_ref.delete().addOnFailureListener {
-        // Handle unsuccessful deletion
-        Log.e("Image Storage Deletion Error", "Unable to delete image: $it")
-    }
+    removeSunsetPostsFromDatabase(posts_to_remove)
 }

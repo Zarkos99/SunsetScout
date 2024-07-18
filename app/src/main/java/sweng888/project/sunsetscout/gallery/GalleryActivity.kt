@@ -138,7 +138,7 @@ class GalleryActivity : AppCompatActivity() {
             val selected_sunsets = m_sunset_list_adaptor.getSelectedSunsets()
             if (selected_sunsets.size > 0) {
                 //Change add sunset button to remove sunset functionality when sunsets are selected
-                deleteImageAndPosts(selected_sunsets)
+                deleteImagesAndPosts(selected_sunsets)
             } else {
                 m_select_image_intent.launch("image/*")
             }
