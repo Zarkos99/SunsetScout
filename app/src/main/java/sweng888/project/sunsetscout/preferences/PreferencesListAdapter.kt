@@ -1,4 +1,4 @@
-package sweng888.project.sunsetscout
+package sweng888.project.sunsetscout.preferences
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import sweng888.project.sunsetscout.R
 
 class PreferencesListAdapter(context: Context, preferences: ArrayList<String>) :
     ArrayAdapter<String>(context, R.layout.preferences_list_item_layout, preferences) {

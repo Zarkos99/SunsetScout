@@ -8,7 +8,7 @@
     android:gravity="top"
     android:background="@color/primary_background"
     android:fitsSystemWindows="true"
-    tools:context=".GalleryActivity">
+    tools:context=".gallery.GalleryActivity">
 
     <!--    User Details  -->
     <LinearLayout

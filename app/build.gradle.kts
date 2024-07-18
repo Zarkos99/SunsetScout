@@ -39,6 +39,8 @@ android {
 dependencies {
 
     implementation(libs.androidx.runtime.android)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
     val fragment_version = "1.8.0"
 
     // Kotlin
@@ -48,8 +50,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation("com.google.code.gson:gson:2.11.0")
-    implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation(libs.gson)
+    implementation(libs.flexbox)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
