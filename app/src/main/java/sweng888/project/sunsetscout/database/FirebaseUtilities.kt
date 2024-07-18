@@ -27,6 +27,23 @@ fun getCurrentUsername(): String {
     return username.toString()
 }
 
+fun updateUserDataField(field_name: String, field_value: Any) {
+    val firebase_database = Firebase.firestore
+    val username = getCurrentUsername()
+
+    val user_ref =
+        firebase_database.collection(
+            Strings.get(R.string.firebase_collection_name)
+        ).document(username)
+
+    user_ref.update(field_name, field_value).addOnFailureListener {
+        Log.w(
+            "updateUserDataField Error",
+            "Failed to update $field_name to $field_value"
+        )
+    }
+}
+
 fun addSunsetPostToDatabase(post: SunsetData) {
     val firebase_database = Firebase.firestore
     val username = getCurrentUsername()
@@ -34,8 +51,7 @@ fun addSunsetPostToDatabase(post: SunsetData) {
     val user_ref =
         firebase_database.collection(
             Strings.get(R.string.firebase_collection_name)
-        )
-            .document(username)
+        ).document(username)
     user_ref.update(Strings.get(R.string.posts_array_name), FieldValue.arrayUnion(post))
 }
 
@@ -60,13 +76,5 @@ fun removeSunsetPostsFromDatabase(posts_to_remove: ArrayList<SunsetData>) {
             }
         }
     }
-}
-
-fun updateUserPost(map_of_updates: Map<String, Any>) {
-    val firebase_database = Firebase.firestore
-    val username = getCurrentUsername()
-
-    firebase_database.collection(Strings.get(R.string.firebase_collection_name))
-        .document(username).update(map_of_updates)
 }
 

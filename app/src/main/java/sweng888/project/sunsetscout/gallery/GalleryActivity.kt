@@ -4,10 +4,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.drawable.Drawable
+import android.media.Image
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -34,6 +37,8 @@ class GalleryActivity : AppCompatActivity() {
     private lateinit var m_sunset_list_adaptor: GallerySunsetPostsAdapter
     private lateinit var m_firebase_data_service: FirebaseDataService
     private lateinit var m_select_image_intent: ActivityResultLauncher<String>
+    private lateinit var m_select_profile_image_intent: ActivityResultLauncher<String>
+    private lateinit var m_profile_image_view: ImageView
     private var m_bound: Boolean = false
 
     /** Defines callbacks for service binding, passed to bindService().  */
@@ -47,14 +52,17 @@ class GalleryActivity : AppCompatActivity() {
 
             initializeRecyclerViewLayoutManager()
             initializeRecyclerViewAdapter()
-
             // Initial population of user info with existent data
             populateTextViewsWithUserInfo()
+            populateProfileImage()
+
             // Populate user info on future updates
             m_firebase_data_service.registerCallback {
                 populateTextViewsWithUserInfo()
                 m_sunset_list_adaptor.unselectDeletedSunsets()
                 m_sunset_list_adaptor.notifyDataSetChanged()
+
+                populateProfileImage()
             }
         }
 
@@ -73,6 +81,14 @@ class GalleryActivity : AppCompatActivity() {
         }
 
         // Create intent to open device storage for image selection
+        m_select_profile_image_intent =
+            registerForActivityResult(ActivityResultContracts.GetContent())
+            { uri ->
+                if (uri != null) {
+                    uploadProfileImage(uri)
+                    m_profile_image_view.setImageURI(uri)
+                }
+            }
         m_select_image_intent = registerForActivityResult(ActivityResultContracts.GetContent())
         { uri ->
             if (uri != null) {
@@ -93,7 +109,12 @@ class GalleryActivity : AppCompatActivity() {
         //Navigation buttons
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val geo_map_button_view = findViewById<Button>(R.id.geo_map_button)
+        m_profile_image_view = findViewById<ImageView>(R.id.profile_picture_view)
 
+        // Profile Image selection listener
+        m_profile_image_view.setOnClickListener {
+            m_select_profile_image_intent.launch("image/*")
+        }
 
         // Navigation button click listeners
         preferences_button_view.setOnClickListener {
@@ -155,6 +176,32 @@ class GalleryActivity : AppCompatActivity() {
             flexWrap = FlexWrap.WRAP
         }
         sunsets_recycler_view.layoutManager = layout_manager
+    }
+
+    /**
+     * Dynamically obtains stored drawable images by name
+     */
+    private fun getImage(ImageName: String?): Drawable {
+        return this@GalleryActivity.resources.getDrawable(
+            this@GalleryActivity.resources.getIdentifier(
+                ImageName,
+                "drawable",
+                this@GalleryActivity.packageName
+            )
+        )
+    }
+
+    fun populateProfileImage() {
+        val current_user_data = m_firebase_data_service.current_user_data
+        if (current_user_data?.profile_image_path.isNullOrEmpty()) {
+            m_profile_image_view.setImageDrawable(getImage("default_profile_pic"))
+        } else {
+            loadCloudStoredImageIntoImageView(
+                this@GalleryActivity,
+                current_user_data?.profile_image_path,
+                m_profile_image_view
+            )
+        }
     }
 
     fun populateTextViewsWithUserInfo() {

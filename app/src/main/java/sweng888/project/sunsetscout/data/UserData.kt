@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter
 data class User(
     val user_id: String = "",
     val biography: String? = "",
+    var profile_image_path: String? = "",
     var posts: ArrayList<SunsetData> = ArrayList()
 ) :
     Parcelable

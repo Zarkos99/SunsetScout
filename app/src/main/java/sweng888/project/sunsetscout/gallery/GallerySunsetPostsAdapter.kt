@@ -17,6 +17,7 @@ import com.google.firebase.storage.storage
 import sweng888.project.sunsetscout.R
 import sweng888.project.sunsetscout.data.SunsetData
 import sweng888.project.sunsetscout.database.FirebaseDataService
+import sweng888.project.sunsetscout.database.loadCloudStoredImageIntoImageView
 
 /**
  * The adaptor for a recyclerview of products with the capability to have selectable items or not
@@ -49,7 +50,11 @@ class GallerySunsetPostsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, dont_use: Int) {
         val user = firebase_data_service.current_user_data
         val sunset = user?.posts?.get(holder.adapterPosition)
-        loadCloudStoredImageIntoImageView(sunset, holder)
+        loadCloudStoredImageIntoImageView(
+            context,
+            sunset?.cloud_image_path,
+            holder.sunset_image_view
+        )
 
         // Below line fixes a bug where deleted sunset checkboxes would positionally
         // associate to next undeleted sunsets at same position by defaulting onBind checkbox
@@ -75,19 +80,6 @@ class GallerySunsetPostsAdapter(
                 callItemSelectedCallbacks()
             }
         })
-    }
-
-    fun loadCloudStoredImageIntoImageView(sunset: SunsetData?, holder: ViewHolder) {
-        if (!sunset?.cloud_image_path.isNullOrEmpty()) {
-            val storage_ref = Firebase.storage.reference.child(sunset?.cloud_image_path!!)
-            storage_ref.downloadUrl.addOnSuccessListener {
-                try {
-                    Glide.with(context).load(it).into(holder.sunset_image_view)
-                } catch (exception: Exception) {
-                    Log.e("Glide Image Download Error", exception.toString())
-                }
-            }
-        }
     }
 
     fun registerItemSelectedCallback(callback: (() -> Unit)) {
