@@ -1,4 +1,4 @@
-package sweng888.project.sunsetscout
+package sweng888.project.sunsetscout.gallery
 
 import android.content.Context
 import android.net.Uri
@@ -8,16 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.io.File
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
+import sweng888.project.sunsetscout.R
+import sweng888.project.sunsetscout.data.SunsetData
+import sweng888.project.sunsetscout.database.FirebaseDataService
+import sweng888.project.sunsetscout.database.loadCloudStoredImageIntoImageView
 
 /**
  * The adaptor for a recyclerview of products with the capability to have selectable items or not
  */
 class GallerySunsetPostsAdapter(
     private val context: Context,
-    private val database: UserDatabaseHelper,
-    private val username: String
+    private val firebase_data_service: FirebaseDataService
 ) :
     RecyclerView.Adapter<GallerySunsetPostsAdapter.ViewHolder>() {
 
@@ -32,17 +39,22 @@ class GallerySunsetPostsAdapter(
         // create new view with UI of weather item
         val view = LayoutInflater.from(context)
             .inflate(R.layout.sunset_gallery_item, parent, false)
+
+        unselectDeletedSunsets()
         return ViewHolder(view)
     }
 
     /**
      * Handles binding of the view holder for each item in the recyclerview
      */
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val sunset = database.getUser(username).posts[position]
-
-        // Fill the text views with high-level information on the products
-        holder.sunset_image_view.setImageURI(Uri.parse(sunset.image_path))
+    override fun onBindViewHolder(holder: ViewHolder, dont_use: Int) {
+        val user = firebase_data_service.current_user_data
+        val sunset = user?.posts?.get(holder.adapterPosition)
+        loadCloudStoredImageIntoImageView(
+            context,
+            sunset?.cloud_image_path,
+            holder.sunset_image_view
+        )
 
         // Below line fixes a bug where deleted sunset checkboxes would positionally
         // associate to next undeleted sunsets at same position by defaulting onBind checkbox
@@ -52,27 +64,34 @@ class GallerySunsetPostsAdapter(
         // Provides logic to track all selected products as the user selects them
         holder.setItemClickListener(object : ViewHolder.ItemClickListener {
             override fun onItemClick(v: View, pos: Int) {
-                val current_sunset = database.getUser(username).posts[pos]
+                val current_sunset =
+                    firebase_data_service.current_user_data?.posts?.get(holder.adapterPosition)
 
                 if (selected_sunsets.contains(current_sunset)) {
                     holder.sunset_checkbox.visibility = View.GONE
                     selected_sunsets.remove(current_sunset)
                 } else {
-                    selected_sunsets.add(current_sunset)
+                    if (current_sunset != null) {
+                        selected_sunsets.add(current_sunset)
+                    }
                     holder.sunset_checkbox.visibility = View.VISIBLE
                 }
 
-                if (item_selected_callbacks.size > 0) {
-                    for (callback in item_selected_callbacks) {
-                        callback()
-                    }
-                }
+                callItemSelectedCallbacks()
             }
         })
     }
 
     fun registerItemSelectedCallback(callback: (() -> Unit)) {
         item_selected_callbacks.add(callback)
+    }
+
+    fun callItemSelectedCallbacks() {
+        if (item_selected_callbacks.size > 0) {
+            for (callback in item_selected_callbacks) {
+                callback()
+            }
+        }
     }
 
     /**
@@ -82,14 +101,19 @@ class GallerySunsetPostsAdapter(
         return selected_sunsets
     }
 
-    fun clearSelectedSunsets() {
-        selected_sunsets.clear()
+    fun unselectDeletedSunsets() {
+        val user = firebase_data_service.current_user_data
+        val sunset_posts = user?.posts
 
-        if (item_selected_callbacks.size > 0) {
-            for (callback in item_selected_callbacks) {
-                callback()
+        if (!sunset_posts.isNullOrEmpty()) {
+            selected_sunsets.removeIf {
+                val selected_sunset = it;
+                !sunset_posts.any { obj -> obj.unique_id == selected_sunset.unique_id }
             }
+        } else {
+            selected_sunsets.clear()
         }
+        callItemSelectedCallbacks()
     }
 
     /**
@@ -103,7 +127,8 @@ class GallerySunsetPostsAdapter(
      * Gets all of the items in the recyclerview
      */
     override fun getItemCount(): Int {
-        return database.getUser(username).posts.size
+        // Returns 0 if posts array is null else returns current size of posts array
+        return firebase_data_service.current_user_data?.posts?.size ?: return 0
     }
 
     /**

@@ -8,7 +8,7 @@
     android:gravity="bottom"
     android:background="@color/primary_background"
     android:fitsSystemWindows="true"
-    tools:context=".GeoMapActivity">
+    tools:context=".geo.GeoMapActivity">
 
     <EditText
         android:id="@+id/search_field"

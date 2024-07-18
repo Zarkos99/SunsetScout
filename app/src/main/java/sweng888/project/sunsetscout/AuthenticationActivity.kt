@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import sweng888.project.sunsetscout.geo.GeoMapActivity
 
 class AuthenticationActivity : AppCompatActivity() {
 

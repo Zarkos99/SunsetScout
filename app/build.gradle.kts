@@ -39,7 +39,9 @@ android {
 dependencies {
 
     implementation(libs.androidx.runtime.android)
-    
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+
     // Kotlin
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
@@ -55,6 +57,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
+    // FirebaseUI Storage
+    implementation(libs.firebase.ui.storage)
 }
 
 apply(plugin = "com.google.gms.google-services")

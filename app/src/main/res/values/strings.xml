@@ -2,4 +2,6 @@
     <string name="app_name">SunsetSc🌄ut</string>
     <string name="database_name">UsersDatabase</string>
     <string name="num_posts">"Posts: %1$d"</string>
+    <string name="firebase_collection_name">"Users"</string>
+    <string name="posts_array_name">"posts"</string>
 </resources>

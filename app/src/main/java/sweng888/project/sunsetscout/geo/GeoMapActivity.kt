@@ -1,14 +1,15 @@
-package sweng888.project.sunsetscout
+package sweng888.project.sunsetscout.geo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import java.time.Instant
-import java.time.format.DateTimeFormatter
+import sweng888.project.sunsetscout.R
+import sweng888.project.sunsetscout.data.User
+import sweng888.project.sunsetscout.gallery.GalleryActivity
+import sweng888.project.sunsetscout.preferences.PreferencesActivity
 
 class GeoMapActivity : AppCompatActivity() {
 
@@ -22,11 +23,11 @@ class GeoMapActivity : AppCompatActivity() {
         val gallery_button_view = findViewById<Button>(R.id.gallery_button)
 
         this.deleteDatabase(this.getString(R.string.database_name)) //TODO: delete this. Keeping it to avoid a bug where we crash because we can't access image filepaths
-        val database_helper = UserDatabaseHelper(this)
-        populateDatabaseWithFakeUsers(database_helper)
+//        val database_helper = UserDatabaseHelper(this)
+//        populateDatabaseWithFakeUsers(database_helper)
 
-        var user =
-            database_helper.getUser("JohnDoe123")
+//        var user =
+//            database_helper.getUser("JohnDoe123")
 
         //TODO: Hook up search bar
 
@@ -41,7 +42,7 @@ class GeoMapActivity : AppCompatActivity() {
         }
     }
 
-    fun populateDatabaseWithFakeUsers(db_helper: UserDatabaseHelper) {
+//    fun populateDatabaseWithFakeUsers(db_helper: UserDatabaseHelper) {
 //        var fake_sunset_1 = SunsetData(
 //            "55.751244",
 //            "37.618423",
@@ -67,28 +68,28 @@ class GeoMapActivity : AppCompatActivity() {
 //            "Not sure how I got here but I managed to snap a quick pic."
 //        )
 
-        var new_user =
-            User(
-                "JohnDoe123",
-                "johndoeiscool@gmail.com",
-                "I am John Doe. Fear me."
-            )
-        db_helper.addUserToDatabase(new_user)
-
-        new_user =
-            User(
-                "C00lK1D",
-                "coolkid24@hotmail.com",
-                "Coolest kid on the block"
-            )
-        db_helper.addUserToDatabase(new_user)
-
-        new_user =
-            User(
-                "RemoteWorker",
-                "worksremote@gmail.com",
-                "Working remotely"
-            )
-        db_helper.addUserToDatabase(new_user)
-    }
+//        var new_user =
+//            User(
+//                "JohnDoe123",
+//                "johndoeiscool@gmail.com",
+//                "I am John Doe. Fear me."
+//            )
+//        db_helper.addUserToDatabase(new_user)
+//
+//        new_user =
+//            User(
+//                "C00lK1D",
+//                "coolkid24@hotmail.com",
+//                "Coolest kid on the block"
+//            )
+//        db_helper.addUserToDatabase(new_user)
+//
+//        new_user =
+//            User(
+//                "RemoteWorker",
+//                "worksremote@gmail.com",
+//                "Working remotely"
+//            )
+//        db_helper.addUserToDatabase(new_user)
+//    }
 }

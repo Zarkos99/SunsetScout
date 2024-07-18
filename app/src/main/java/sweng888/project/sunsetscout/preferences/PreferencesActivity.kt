@@ -1,4 +1,4 @@
-package sweng888.project.sunsetscout
+package sweng888.project.sunsetscout.preferences
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,9 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import sweng888.project.sunsetscout.gallery.GalleryActivity
+import sweng888.project.sunsetscout.geo.GeoMapActivity
+import sweng888.project.sunsetscout.R
 
 class PreferencesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +36,14 @@ class PreferencesActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-}
 
-private fun loadPreferenceOptions(context: Context): ArrayList<String> {
-    val classes = ArrayList<String>()
+    private fun loadPreferenceOptions(context: Context): ArrayList<String> {
+        val classes = ArrayList<String>()
 
-    for (i in 1..8) {
-        classes.add("Preference $i")
+        for (i in 1..8) {
+            classes.add("Preference $i")
+        }
+
+        return classes
     }
-
-    return classes
 }

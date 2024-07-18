@@ -1,9 +1,10 @@
 [versions]
 agp = "8.4.1"
 firebaseBom = "33.1.2"
-googleServices = "4.4.2"
+firebaseUiStorage = "7.2.0"
 flexbox = "3.0.0"
-fragmentKtx = "1.8.0"
+fragmentKtx = "1.8.1"
+googleServices = "4.4.2"
 gson = "2.11.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -15,15 +16,19 @@ material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
 runtimeAndroid = "1.6.8"
+firebaseAuthKtx = "23.0.0"
+firebaseFirestoreKtx = "25.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
-google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
-androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
+firebase-ui-storage = { module = "com.firebaseui:firebase-ui-storage", version.ref = "firebaseUiStorage" }
 flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -33,6 +38,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
