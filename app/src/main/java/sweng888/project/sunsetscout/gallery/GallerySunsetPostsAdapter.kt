@@ -20,7 +20,7 @@ import sweng888.project.sunsetscout.database.FirebaseDataService
 import sweng888.project.sunsetscout.database.loadCloudStoredImageIntoImageView
 
 /**
- * The adaptor for a recyclerview of products with the capability to have selectable items or not
+ * The adaptor for a recyclerview of sunset posts with the capability to have selectable items or not
  */
 class GallerySunsetPostsAdapter(
     private val context: Context,
@@ -36,7 +36,7 @@ class GallerySunsetPostsAdapter(
      * Handles creation of the view holder for each item in the recyclerview
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create new view with UI of weather item
+        // create new view
         val view = LayoutInflater.from(context)
             .inflate(R.layout.sunset_gallery_item, parent, false)
 

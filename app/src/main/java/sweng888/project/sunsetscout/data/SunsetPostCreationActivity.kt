@@ -1,10 +1,8 @@
 package sweng888.project.sunsetscout.data
 
-import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,8 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import sweng888.project.sunsetscout.R
 import sweng888.project.sunsetscout.database.uploadImageAndCreateNewPost
-import sweng888.project.sunsetscout.gallery.GalleryActivity
-import sweng888.project.sunsetscout.preferences.PreferencesActivity
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 

@@ -20,21 +20,18 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import sweng888.project.sunsetscout.R
-import sweng888.project.sunsetscout.data.SunsetData
 import sweng888.project.sunsetscout.data.SunsetPostCreationActivity
 import sweng888.project.sunsetscout.database.*
 import sweng888.project.sunsetscout.geo.GeoMapActivity
 import sweng888.project.sunsetscout.preferences.PreferencesActivity
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 
 
 class GalleryActivity : AppCompatActivity() {
 
     private lateinit var m_sunset_list_adaptor: GallerySunsetPostsAdapter
-    private lateinit var m_firebase_data_service: FirebaseDataService
     private lateinit var m_select_profile_image_intent: ActivityResultLauncher<String>
     private lateinit var m_profile_image_view: ImageView
+    private lateinit var m_firebase_data_service: FirebaseDataService
     private var m_bound: Boolean = false
 
     /** Defines callbacks for service binding, passed to bindService().  */
