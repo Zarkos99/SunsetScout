@@ -10,25 +10,52 @@
     android:fitsSystemWindows="true"
     tools:context=".geo.GeoMapActivity">
 
-    <EditText
-        android:id="@+id/search_field"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:layout_marginLeft="40sp"
-        android:layout_marginRight="40sp"
-        android:layout_marginBottom="20sp"
-        android:background="@drawable/input_field"
-        android:gravity="center"
-        android:textColorHint="@color/primary_background"
-        android:textSize="24sp"
-        android:hint="Search for sunsets" />
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
 
-    <!--    TODO: Use recyclerview for list of sunsets -->
+        <!-- TODO: Implement google map to fill RelativeLayout background -->
+
+        <SearchView
+            android:id="@+id/geo_sunsets_search_field"
+            android:layout_width="match_parent"
+            android:layout_height="60sp"
+            android:layout_marginLeft="40sp"
+            android:layout_marginRight="40sp"
+            android:layout_marginBottom="20sp"
+            android:layout_above="@+id/geo_recycler_view_container"
+            android:background="@drawable/input_field"
+            android:gravity="center"
+            android:textColorHint="@color/primary_background"
+            android:textSize="24sp"
+            android:queryHint="Search for sunsets" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@id/geo_recycler_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/dark_accent_background">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/geo_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHeight_max="400sp"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarFadeDuration="0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
     <!--    Navigation Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="0">
 
         <include
             layout="@layout/navigation_bar_layout"

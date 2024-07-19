@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,24 +19,19 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.firebase.Firebase
-import com.google.firebase.storage.storage
 import sweng888.project.sunsetscout.R
-import sweng888.project.sunsetscout.data.SunsetData
+import sweng888.project.sunsetscout.data.SunsetPostCreationActivity
 import sweng888.project.sunsetscout.database.*
 import sweng888.project.sunsetscout.geo.GeoMapActivity
 import sweng888.project.sunsetscout.preferences.PreferencesActivity
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 
 
 class GalleryActivity : AppCompatActivity() {
 
     private lateinit var m_sunset_list_adaptor: GallerySunsetPostsAdapter
-    private lateinit var m_firebase_data_service: FirebaseDataService
-    private lateinit var m_select_image_intent: ActivityResultLauncher<String>
     private lateinit var m_select_profile_image_intent: ActivityResultLauncher<String>
     private lateinit var m_profile_image_view: ImageView
+    private lateinit var m_firebase_data_service: FirebaseDataService
     private var m_bound: Boolean = false
 
     /** Defines callbacks for service binding, passed to bindService().  */
@@ -89,22 +82,6 @@ class GalleryActivity : AppCompatActivity() {
                     m_profile_image_view.setImageURI(uri)
                 }
             }
-        m_select_image_intent = registerForActivityResult(ActivityResultContracts.GetContent())
-        { uri ->
-            if (uri != null) {
-                //TODO: Replace this fake data with new activity to input this data
-                var fake_sunset_data = SunsetData(
-                    latitude = "-48.876667",
-                    longitude = "-123.393333",
-                    post_time = DateTimeFormatter.ISO_INSTANT.format(
-                        Instant.now()
-                    ),
-                    description = "Not sure how I got here but I managed to snap a quick pic."
-                )
-
-                uploadImageAndCreateNewPost(fake_sunset_data, uri)
-            }
-        }
 
         //Navigation buttons
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
@@ -161,7 +138,9 @@ class GalleryActivity : AppCompatActivity() {
                 //Change add sunset button to remove sunset functionality when sunsets are selected
                 deleteImagesAndPosts(selected_sunsets)
             } else {
-                m_select_image_intent.launch("image/*")
+                val intent = Intent(this, SunsetPostCreationActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }
