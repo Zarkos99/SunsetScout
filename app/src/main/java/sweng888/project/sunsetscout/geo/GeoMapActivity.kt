@@ -22,13 +22,6 @@ class GeoMapActivity : AppCompatActivity() {
         val preferences_button_view = findViewById<Button>(R.id.preferences_button)
         val gallery_button_view = findViewById<Button>(R.id.gallery_button)
 
-        this.deleteDatabase(this.getString(R.string.database_name)) //TODO: delete this. Keeping it to avoid a bug where we crash because we can't access image filepaths
-//        val database_helper = UserDatabaseHelper(this)
-//        populateDatabaseWithFakeUsers(database_helper)
-
-//        var user =
-//            database_helper.getUser("JohnDoe123")
-
         //TODO: Hook up search bar
 
         preferences_button_view.setOnClickListener {

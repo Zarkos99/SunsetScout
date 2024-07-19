@@ -1,6 +1,5 @@
 package sweng888.project.sunsetscout.database
 
-import android.net.Uri
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
