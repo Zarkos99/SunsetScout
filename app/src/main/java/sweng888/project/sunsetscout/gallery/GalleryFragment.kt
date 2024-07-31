@@ -7,14 +7,15 @@ import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.IBinder
-import android.widget.Button
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -22,11 +23,15 @@ import com.google.android.flexbox.JustifyContent
 import sweng888.project.sunsetscout.R
 import sweng888.project.sunsetscout.data.SunsetPostCreationActivity
 import sweng888.project.sunsetscout.database.*
-import sweng888.project.sunsetscout.geo.GeoMapActivity
-import sweng888.project.sunsetscout.preferences.PreferencesActivity
+import sweng888.project.sunsetscout.databinding.GalleryFragmentBinding
 
 
-class GalleryActivity : AppCompatActivity() {
+class GalleryFragment : Fragment() {
+    private var _binding: GalleryFragmentBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var m_sunset_list_adaptor: GallerySunsetPostsAdapter
     private lateinit var m_select_profile_image_intent: ActivityResultLauncher<String>
@@ -64,14 +69,23 @@ class GalleryActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.gallery_layout)
+
         // Bind to LocalService.
-        Intent(this, FirebaseDataService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = GalleryFragmentBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         // Create intent to open device storage for image selection
         m_select_profile_image_intent =
@@ -83,41 +97,34 @@ class GalleryActivity : AppCompatActivity() {
                 }
             }
 
-        //Navigation buttons
-        val preferences_button_view = findViewById<Button>(R.id.preferences_button)
-        val geo_map_button_view = findViewById<Button>(R.id.geo_map_button)
-        m_profile_image_view = findViewById<ImageView>(R.id.profile_picture_view)
+        m_profile_image_view = binding.profilePictureView
 
         // Profile Image selection listener
         m_profile_image_view.setOnClickListener {
             m_select_profile_image_intent.launch("image/*")
         }
 
-        // Navigation button click listeners
-        preferences_button_view.setOnClickListener {
-            val intent = Intent(this@GalleryActivity, PreferencesActivity::class.java)
-            startActivity(intent)
-        }
-        geo_map_button_view.setOnClickListener {
-            val intent = Intent(this@GalleryActivity, GeoMapActivity::class.java)
-            startActivity(intent)
-        }
+        return root
     }
 
+    override fun onStart() {
+        super.onStart()
+        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
 
     override fun onStop() {
         super.onStop()
-        if (m_bound) {
-            unbindService(connection)
-            m_bound = false
-        }
+        requireActivity().unbindService(connection)
+        m_bound = false
     }
 
     fun initializeRecyclerViewAdapter() {
-        val add_or_remove_sunset_button_view = findViewById<Button>(R.id.add_sunset_button)
-        val sunsets_recycler_view = findViewById<RecyclerView>(R.id.gallery_sunsets)
+        val add_or_remove_sunset_button_view = binding.addSunsetButton
+        val sunsets_recycler_view = binding.gallerySunsets
         // Initialize recyclerview adaptor
-        m_sunset_list_adaptor = GallerySunsetPostsAdapter(this, m_firebase_data_service)
+        m_sunset_list_adaptor = GallerySunsetPostsAdapter(requireContext(), m_firebase_data_service)
         m_sunset_list_adaptor.registerItemSelectedCallback {
             val selected_sunsets = m_sunset_list_adaptor.getSelectedSunsets()
             // If some sunsets are selected and button is pressed we want to show option to
@@ -138,17 +145,17 @@ class GalleryActivity : AppCompatActivity() {
                 //Change add sunset button to remove sunset functionality when sunsets are selected
                 deleteImagesAndPosts(selected_sunsets)
             } else {
-                val intent = Intent(this, SunsetPostCreationActivity::class.java)
+                val intent = Intent(activity, SunsetPostCreationActivity::class.java)
                 startActivity(intent)
-                finish()
+                // Not calling finish() here so that SunsetPostCreationActivity will come back to this fragment
             }
         }
     }
 
     fun initializeRecyclerViewLayoutManager() {
-        val sunsets_recycler_view = findViewById<RecyclerView>(R.id.gallery_sunsets)
+        val sunsets_recycler_view = binding.gallerySunsets
         // Initialize FlexBox Layout Manager for recyclerview to allow wrapping items to next line
-        val layout_manager = FlexboxLayoutManager(this)
+        val layout_manager = FlexboxLayoutManager(requireContext())
         layout_manager.apply {
             flexDirection = FlexDirection.ROW
             justifyContent = JustifyContent.FLEX_START
@@ -161,13 +168,13 @@ class GalleryActivity : AppCompatActivity() {
      * Dynamically obtains stored drawable images by name
      */
     private fun getImage(ImageName: String?): Drawable {
-        return this@GalleryActivity.resources.getDrawable(
-            this@GalleryActivity.resources.getIdentifier(
+        return activity?.resources?.getDrawable(
+            activity?.resources?.getIdentifier(
                 ImageName,
                 "drawable",
-                this@GalleryActivity.packageName
-            )
-        )
+                activity?.packageName
+            )!!
+        )!!
     }
 
     fun populateProfileImage() {
@@ -176,7 +183,7 @@ class GalleryActivity : AppCompatActivity() {
             m_profile_image_view.setImageDrawable(getImage("default_profile_pic"))
         } else {
             loadCloudStoredImageIntoImageView(
-                this@GalleryActivity,
+                requireContext(),
                 current_user_data?.profile_image_path,
                 m_profile_image_view
             )
@@ -185,9 +192,9 @@ class GalleryActivity : AppCompatActivity() {
 
     fun populateTextViewsWithUserInfo() {
         val current_user = m_firebase_data_service.current_user_data
-        val public_username_text_view = findViewById<TextView>(R.id.public_username)
-        val num_posts_text_view = findViewById<TextView>(R.id.num_posts)
-        val biography_text_view = findViewById<TextView>(R.id.biography)
+        val public_username_text_view = binding.publicUsername
+        val num_posts_text_view = binding.numPosts
+        val biography_text_view = binding.biography
 
         public_username_text_view.text = current_user?.user_id
         biography_text_view.text = current_user?.biography

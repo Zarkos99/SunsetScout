@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.1"
+agp = "8.5.1"
 firebaseBom = "33.1.2"
 firebaseUiStorage = "7.2.0"
 flexbox = "3.0.0"
@@ -15,9 +15,12 @@ appcompat = "1.6.1"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
+playServicesMaps = "19.0.0"
 runtimeAndroid = "1.6.8"
 firebaseAuthKtx = "23.0.0"
 firebaseFirestoreKtx = "25.0.0"
+navigationFragmentKtx = "2.7.7"
+navigationUiKtx = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +43,9 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

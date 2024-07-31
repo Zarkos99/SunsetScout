@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_geo">
+
+    <fragment
+        android:id="@+id/navigation_preferences"
+        android:name="sweng888.project.sunsetscout.preferences.PreferencesFragment"
+        android:label="@string/title_preferences"
+        tools:layout="@layout/preferences_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_geo"
+        android:name="sweng888.project.sunsetscout.geo.GeoMapFragment"
+        android:label="@string/title_geo"
+        tools:layout="@layout/geo_map_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_gallery"
+        android:name="sweng888.project.sunsetscout.gallery.GalleryFragment"
+        android:label="@string/title_gallery"
+        tools:layout="@layout/gallery_fragment" />
+</navigation>

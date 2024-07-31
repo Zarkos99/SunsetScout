@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_preferences"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Preferences" />
+
+    <item
+        android:id="@+id/navigation_geo"
+        android:icon="@drawable/globe"
+        android:title="Geo" />
+
+    <item
+        android:id="@+id/navigation_gallery"
+        android:icon="@drawable/baseline_collections_24"
+        android:title="Gallery" />
+
+</menu>

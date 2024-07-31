@@ -14,6 +14,9 @@ class App : Application() {
     }
 }
 
+/**
+ * Get string value from application's strings regardless of scope
+ */
 object Strings {
     fun get(@StringRes stringRes: Int, vararg formatArgs: Any = emptyArray()): String {
         return App.instance.getString(stringRes, *formatArgs)

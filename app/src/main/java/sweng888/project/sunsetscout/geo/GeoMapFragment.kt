@@ -6,31 +6,24 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RelativeLayout
+import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
-import com.google.android.flexbox.AlignContent
 import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import sweng888.project.sunsetscout.R
-import sweng888.project.sunsetscout.data.SunsetPostCreationActivity
-import sweng888.project.sunsetscout.data.User
 import sweng888.project.sunsetscout.database.FirebaseDataService
-import sweng888.project.sunsetscout.database.deleteImagesAndPosts
-import sweng888.project.sunsetscout.gallery.GalleryActivity
-import sweng888.project.sunsetscout.gallery.GallerySunsetPostsAdapter
-import sweng888.project.sunsetscout.preferences.PreferencesActivity
+import sweng888.project.sunsetscout.databinding.GeoMapFragmentBinding
 
-class GeoMapActivity : AppCompatActivity() {
+class GeoMapFragment : Fragment() {
+    private var _binding: GeoMapFragmentBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var m_recycler_view: RecyclerView
     private lateinit var m_firebase_data_service: FirebaseDataService
@@ -61,18 +54,24 @@ class GeoMapActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.geo_map_layout)
-        // Bind to LocalService.
-        Intent(this, FirebaseDataService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
 
-        m_recycler_view = findViewById(R.id.geo_recycler_view)
+        // Bind to LocalService.
+        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = GeoMapFragmentBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        m_recycler_view = binding.geoRecyclerView
         m_recycler_view.visibility = View.GONE
-        val search_view = findViewById<SearchView>(R.id.geo_sunsets_search_field)
-        val preferences_button_view = findViewById<Button>(R.id.preferences_button)
-        val gallery_button_view = findViewById<Button>(R.id.gallery_button)
+        val search_view = binding.geoSunsetsSearchField
 
         //TODO: Hook up search bar
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -91,27 +90,31 @@ class GeoMapActivity : AppCompatActivity() {
             }
         })
 
-        preferences_button_view.setOnClickListener {
-            val intent = Intent(this@GeoMapActivity, PreferencesActivity::class.java)
-            startActivity(intent)
-        }
+        return root
+    }
 
-        gallery_button_view.setOnClickListener {
-            val intent = Intent(this@GeoMapActivity, GalleryActivity::class.java)
-            startActivity(intent)
+    override fun onStart() {
+        super.onStart()
+        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        requireActivity().unbindService(connection)
+        m_bound = false
+    }
 
     fun initializeRecyclerViewAdapter() {
         // Initialize recyclerview adaptor
-        val sunset_list_adaptor = GeoSunsetListAdapter(this, m_firebase_data_service)
+        val sunset_list_adaptor = GeoSunsetListAdapter(requireContext(), m_firebase_data_service)
         m_recycler_view.adapter = sunset_list_adaptor
     }
 
     fun initializeRecyclerViewLayoutManager() {
         // Initialize FlexBox Layout Manager for recyclerview to allow wrapping items to next line
-        val layout_manager = FlexboxLayoutManager(this)
+        val layout_manager = FlexboxLayoutManager(requireContext())
         layout_manager.apply {
             flexDirection = FlexDirection.ROW
             justifyContent = JustifyContent.FLEX_START
