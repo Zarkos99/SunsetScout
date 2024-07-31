@@ -21,6 +21,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import sweng888.project.sunsetscout.R
+import sweng888.project.sunsetscout.Strings
 import sweng888.project.sunsetscout.data.SunsetPostCreationActivity
 import sweng888.project.sunsetscout.database.*
 import sweng888.project.sunsetscout.databinding.GalleryFragmentBinding
@@ -198,9 +199,7 @@ class GalleryFragment : Fragment() {
 
         public_username_text_view.text = current_user?.user_id
         biography_text_view.text = current_user?.biography
-        num_posts_text_view.text = resources.getString(
-            R.string.num_posts,
-            current_user?.posts?.size
-        )
+        num_posts_text_view.text =
+            Strings.get(R.string.num_posts, current_user?.posts?.size!!)
     }
 }
