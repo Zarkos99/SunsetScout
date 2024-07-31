@@ -75,7 +75,7 @@ class GalleryFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // Bind to LocalService.
-        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+        Intent(activity, FirebaseDataService::class.java).also { intent ->
             requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
@@ -110,7 +110,7 @@ class GalleryFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+        Intent(activity, FirebaseDataService::class.java).also { intent ->
             requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
@@ -183,11 +183,13 @@ class GalleryFragment : Fragment() {
         if (current_user_data?.profile_image_path.isNullOrEmpty()) {
             m_profile_image_view.setImageDrawable(getImage("default_profile_pic"))
         } else {
-            loadCloudStoredImageIntoImageView(
-                requireContext(),
-                current_user_data?.profile_image_path,
-                m_profile_image_view
-            )
+            if (context != null) {
+                loadCloudStoredImageIntoImageView(
+                    requireContext(),
+                    current_user_data?.profile_image_path,
+                    m_profile_image_view
+                )
+            }
         }
     }
 
@@ -200,6 +202,9 @@ class GalleryFragment : Fragment() {
         public_username_text_view.text = current_user?.user_id
         biography_text_view.text = current_user?.biography
         num_posts_text_view.text =
-            Strings.get(R.string.num_posts, current_user?.posts?.size!!)
+            Strings.get(
+                R.string.num_posts,
+                if (current_user?.posts?.size != null) current_user.posts.size else 0
+            )
     }
 }
