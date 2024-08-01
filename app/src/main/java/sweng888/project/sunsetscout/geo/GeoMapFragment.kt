@@ -52,15 +52,6 @@ class GeoMapFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Bind to LocalService.
-        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
-            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,6 +63,11 @@ class GeoMapFragment : Fragment() {
         m_recycler_view = binding.geoRecyclerView
         m_recycler_view.visibility = View.GONE
         val search_view = binding.geoSunsetsSearchField
+
+        // Bind to LocalService.
+        Intent(requireContext(), FirebaseDataService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
 
         //TODO: Hook up search bar
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

@@ -1,10 +1,13 @@
 package sweng888.project.sunsetscout.preferences
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
+import sweng888.project.sunsetscout.AuthenticationActivity
 import sweng888.project.sunsetscout.databinding.PreferencesFragmentBinding
 
 class PreferencesFragment : Fragment() {
@@ -22,11 +25,16 @@ class PreferencesFragment : Fragment() {
         _binding = PreferencesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val preferences = loadPreferenceOptions()
-        val adapter = PreferencesListAdapter(requireContext(), preferences)
+        val logout_button = binding.logoutButton
 
-        val preferences_list_view = binding.preferencesListView
-        preferences_list_view.adapter = adapter
+        logout_button.setOnClickListener {
+            // Log out user and open authentication activity
+            FirebaseAuth.getInstance().signOut()
+            val intent =
+                Intent(activity, AuthenticationActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
 
         return root
     }
@@ -34,15 +42,5 @@ class PreferencesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun loadPreferenceOptions(): ArrayList<String> {
-        val classes = ArrayList<String>()
-
-        for (i in 1..8) {
-            classes.add("Preference $i")
-        }
-
-        return classes
     }
 }
