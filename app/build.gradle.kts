@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.firebase.storage)
     // FirebaseUI Storage
     implementation(libs.firebase.ui.storage)
+    implementation(libs.play.services.maps.v1802)
 }
 
 apply(plugin = "com.google.gms.google-services")

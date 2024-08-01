@@ -15,10 +15,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import sweng888.project.sunsetscout.R
 import sweng888.project.sunsetscout.database.FirebaseDataService
 import sweng888.project.sunsetscout.databinding.GeoMapFragmentBinding
 
-class GeoMapFragment : Fragment() {
+class GeoMapFragment : Fragment(), OnMapReadyCallback {
     private var _binding: GeoMapFragmentBinding? = null
 
     // This property is only valid between onCreateView and
@@ -28,11 +34,11 @@ class GeoMapFragment : Fragment() {
     private lateinit var m_recycler_view: RecyclerView
     private lateinit var m_firebase_data_service: FirebaseDataService
     private var m_bound: Boolean = false
+    private lateinit var mMap: GoogleMap
 
 
     /** Defines callbacks for service binding, passed to bindService().  */
     private val connection = object : ServiceConnection {
-
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as FirebaseDataService.LocalBinder
@@ -44,6 +50,7 @@ class GeoMapFragment : Fragment() {
 
             // Listen to user data updates
             m_firebase_data_service.registerCallback {
+                // Handle data update
             }
         }
 
@@ -72,11 +79,7 @@ class GeoMapFragment : Fragment() {
         //TODO: Hook up search bar
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                var nonnull_query = ""
-                if (query != null) {
-                    nonnull_query = query
-                }
-
+                val nonnull_query = query ?: ""
                 m_recycler_view.visibility = View.VISIBLE
                 return false
             }
@@ -86,7 +89,16 @@ class GeoMapFragment : Fragment() {
             }
         })
 
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
         return root
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        val initialLocation = LatLng(-34.0, 151.0)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialLocation, 10f))
     }
 
     override fun onStart() {
@@ -102,13 +114,13 @@ class GeoMapFragment : Fragment() {
         m_bound = false
     }
 
-    fun initializeRecyclerViewAdapter() {
+    private fun initializeRecyclerViewAdapter() {
         // Initialize recyclerview adaptor
         val sunset_list_adaptor = GeoSunsetListAdapter(requireContext(), m_firebase_data_service)
         m_recycler_view.adapter = sunset_list_adaptor
     }
 
-    fun initializeRecyclerViewLayoutManager() {
+    private fun initializeRecyclerViewLayoutManager() {
         // Initialize FlexBox Layout Manager for recyclerview to allow wrapping items to next line
         val layout_manager = FlexboxLayoutManager(requireContext())
         layout_manager.apply {
@@ -117,5 +129,4 @@ class GeoMapFragment : Fragment() {
         }
         m_recycler_view.layoutManager = layout_manager
     }
-
 }
