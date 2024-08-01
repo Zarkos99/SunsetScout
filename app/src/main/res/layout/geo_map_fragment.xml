@@ -12,10 +12,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
-        <!-- TODO: Implement google map to fill RelativeLayout background -->
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <SearchView
             android:id="@+id/geo_sunsets_search_field"
@@ -47,7 +51,6 @@
                 android:scrollbars="vertical"
                 android:fadeScrollbars="false"
                 android:scrollbarFadeDuration="0" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </LinearLayout>

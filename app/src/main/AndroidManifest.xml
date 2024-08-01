@@ -5,6 +5,8 @@
     <!-- Add the necessary permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".App"
@@ -17,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SunsetScout"
         tools:targetApi="31">
+
+        <!-- Add the Google Maps API key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAeOVmkx58Imyud3xX5wmR_GUM_fNqDbV0"/>
+
         <service android:name=".database.FirebaseDataService" />
 
         <activity
