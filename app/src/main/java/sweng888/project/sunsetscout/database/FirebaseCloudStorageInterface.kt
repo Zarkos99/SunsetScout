@@ -19,7 +19,7 @@ fun uploadProfileImage(file: Uri) {
     // Create a storage reference from our app
     val storage_ref = m_firebase_storage.reference
 
-    val storage_path_to_image = "${getCurrentUsername()}/profile_image"
+    val storage_path_to_image = "${getCurrentUserId()}/profile_image"
     val image_ref = storage_ref.child(storage_path_to_image)
     val upload_task = image_ref.putFile(file)
 
@@ -43,7 +43,7 @@ fun uploadImageAndCreateNewPost(post: SunsetData, file: Uri) {
     // Create a storage reference from our app
     val storage_ref = m_firebase_storage.reference
 
-    val storage_path_to_image = "${getCurrentUsername()}/post_images/Sunset_${post.unique_id}"
+    val storage_path_to_image = "${getCurrentUserId()}/post_images/Sunset_${post.unique_id}"
     val image_ref = storage_ref.child(storage_path_to_image)
     val upload_task = image_ref.putFile(file)
 

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import sweng888.project.sunsetscout.database.addUser
 
 class AuthenticationActivity : AppCompatActivity() {
 
@@ -102,6 +103,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Registration success, display Geo View - enlarged map
+                        addUser()
                         val intent =
                             Intent(this@AuthenticationActivity, NavigationBaseActivity::class.java)
                         startActivity(intent)
