@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +10,6 @@
     tools:context=".gallery.GalleryFragment">
 
     <!--    User Details  -->
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -61,28 +59,44 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200sp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/biography"
+        <EditText
+            android:id="@+id/biography_input_field"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="10sp"
+            android:inputType="text"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/add_sunset_button"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="15dp"
-            android:contentDescription="Add sunset post to gallery"
-            android:textColor="@color/white"
-            android:textSize="@android:dimen/app_icon_size"
-            android:text="+" />
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/save_biography_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:text="Save"
+                android:clickable="false" />
+
+            <Button
+                android:id="@+id/add_sunset_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:contentDescription="Add sunset post to gallery"
+                android:textColor="@color/white"
+                android:textSize="@android:dimen/app_icon_size"
+                android:text="+" />
+        </LinearLayout>
     </LinearLayout>
 
     <!--    Gallery of Sunset Posts-->

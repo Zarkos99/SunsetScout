@@ -10,16 +10,18 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.firebase.auth.FirebaseAuth
 import sweng888.project.sunsetscout.R
 import sweng888.project.sunsetscout.Strings
 import sweng888.project.sunsetscout.data.SunsetPostCreationActivity
@@ -36,8 +38,9 @@ class GalleryFragment : Fragment() {
 
     private lateinit var m_sunset_list_adaptor: GallerySunsetPostsAdapter
     private lateinit var m_select_profile_image_intent: ActivityResultLauncher<String>
-    private lateinit var m_profile_image_view: ImageView
     private lateinit var m_firebase_data_service: FirebaseDataService
+    private lateinit var m_profile_image_view: ImageView
+    private lateinit var m_add_or_remove_sunset_button_view: Button
     private var m_bound: Boolean = false
 
     /** Defines callbacks for service binding, passed to bindService().  */
@@ -99,10 +102,38 @@ class GalleryFragment : Fragment() {
             }
 
         m_profile_image_view = binding.profilePictureView
+        val biography_input_field = binding.biographyInputField
+        val save_biography_button = binding.saveBiographyButton
+        disableButton(save_biography_button)
 
         // Profile Image selection listener
         m_profile_image_view.setOnClickListener {
             m_select_profile_image_intent.launch("image/*")
+        }
+
+
+        biography_input_field.doAfterTextChanged { new_biography_editable ->
+            val new_biography = new_biography_editable.toString()
+
+            if (::m_firebase_data_service.isInitialized) {
+                if (m_firebase_data_service.current_user_data?.biography != new_biography) {
+                    enableButton(save_biography_button)
+                } else {
+                    disableButton(save_biography_button)
+                }
+            }
+        }
+
+        save_biography_button.setOnClickListener {
+            val new_biography = biography_input_field.text.toString()
+
+            if (::m_firebase_data_service.isInitialized) {
+                if (m_firebase_data_service.current_user_data?.biography != new_biography) {
+                    updateUserDataField("biography", new_biography)
+                }
+
+                disableButton(save_biography_button)
+            }
         }
 
         return root
@@ -122,7 +153,7 @@ class GalleryFragment : Fragment() {
     }
 
     fun initializeRecyclerViewAdapter() {
-        val add_or_remove_sunset_button_view = binding.addSunsetButton
+        m_add_or_remove_sunset_button_view = binding.addSunsetButton
         val sunsets_recycler_view = binding.gallerySunsets
         // Initialize recyclerview adaptor
         m_sunset_list_adaptor = GallerySunsetPostsAdapter(requireContext(), m_firebase_data_service)
@@ -131,16 +162,16 @@ class GalleryFragment : Fragment() {
             // If some sunsets are selected and button is pressed we want to show option to
             // delete them, else show option to add sunset
             if (selected_sunsets.size > 0) {
-                add_or_remove_sunset_button_view.text = "-"
+                m_add_or_remove_sunset_button_view.text = "-"
             } else {
-                add_or_remove_sunset_button_view.text = "+"
+                m_add_or_remove_sunset_button_view.text = "+"
             }
         }
         sunsets_recycler_view.adapter = m_sunset_list_adaptor
 
 
         // Setup listener for image upload button
-        add_or_remove_sunset_button_view.setOnClickListener {
+        m_add_or_remove_sunset_button_view.setOnClickListener {
             val selected_sunsets = m_sunset_list_adaptor.getSelectedSunsets()
             if (selected_sunsets.size > 0) {
                 //Change add sunset button to remove sunset functionality when sunsets are selected
@@ -194,17 +225,37 @@ class GalleryFragment : Fragment() {
     }
 
     fun populateTextViewsWithUserInfo() {
-        val current_user = m_firebase_data_service.current_user_data
+        val current_user = FirebaseAuth.getInstance().currentUser
+        val current_database_user_info = m_firebase_data_service.current_user_data
         val public_username_text_view = binding.publicUsername
         val num_posts_text_view = binding.numPosts
-        val biography_text_view = binding.biography
+        val biography_text_view = binding.biographyInputField
 
-        public_username_text_view.text = current_user?.user_id
-        biography_text_view.text = current_user?.biography
+        public_username_text_view.text =
+            if (!current_user?.displayName.isNullOrEmpty()) current_user?.displayName else current_user?.email
+        biography_text_view.setText(current_database_user_info?.biography)
         num_posts_text_view.text =
             Strings.get(
                 R.string.num_posts,
-                if (current_user?.posts?.size != null) current_user.posts.size else 0
+                if (current_database_user_info?.posts?.size != null) current_database_user_info.posts.size else 0
             )
+    }
+
+    private fun enableButton(button: Button) {
+        button.isEnabled = true
+        button.isClickable = true
+        if (context != null) {
+            button.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            button.background = m_add_or_remove_sunset_button_view.background
+        }
+    }
+
+    private fun disableButton(button: Button) {
+        button.isEnabled = false
+        button.isClickable = false
+        if (context != null) {
+            button.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_grey))
+            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.grey))
+        }
     }
 }

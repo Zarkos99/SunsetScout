@@ -1,31 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top"
     android:background="@color/primary_background"
     android:fitsSystemWindows="true"
+    android:theme="@style/Theme.SunsetScout"
     tools:context=".preferences.PreferencesFragment">
 
     <TextView
+        android:id="@+id/preferences_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80sp"
-        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:text="Preferences"
         android:textSize="40sp"
         android:textStyle="bold"
         android:textColor="@android:color/holo_orange_dark" />
 
-    <ListView
-        android:id="@+id/preferences_list_view"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
-</LinearLayout>
+        android:layout_below="@id/preferences_title"
+        android:layout_above="@id/logout_button"
+        android:layout_marginStart="30sp"
+        android:layout_marginEnd="30sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:gravity="center"
+            android:text="Email: "
+            android:textSize="25sp"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/email_input_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@color/primary_background"
+            android:textSize="20sp"
+            android:background="@drawable/input_field" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Display Name: "
+            android:textSize="25sp"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/display_name_input_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@color/primary_background"
+            android:textSize="20sp"
+            android:background="@drawable/input_field" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_preferences_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20sp"
+        android:layout_marginStart="10sp"
+        android:layout_alignParentEnd="true"
+        android:text="Save"
+        android:clickable="false" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20sp"
+        android:layout_marginStart="10sp"
+        android:text="Logout" />
+</RelativeLayout>

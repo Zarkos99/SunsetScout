@@ -16,6 +16,7 @@ data class User(
 
 @Parcelize
 data class SunsetData(
+    val title: String? = "",
     val latitude: String? = "",
     val longitude: String? = "",
     val post_time: String? = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),

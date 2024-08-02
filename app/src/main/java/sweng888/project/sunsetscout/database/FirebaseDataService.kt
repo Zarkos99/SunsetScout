@@ -53,7 +53,7 @@ class FirebaseDataService : Service() {
         val user_ref =
             m_firebase_database.collection(
                 Strings.get(R.string.firebase_collection_name)
-            ).document(getCurrentUsername())
+            ).document(getCurrentUserId())
 
         user_ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -66,6 +66,7 @@ class FirebaseDataService : Service() {
                 callCallbacks()
             } else {
                 Log.d("Firebase Database", "Snapshot listener data: null")
+                addUser()
             }
         }
 
